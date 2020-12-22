@@ -1,0 +1,91 @@
+% This file was created by tikzplotlib v0.9.4.
+\begin{tikzpicture}
+
+\definecolor{color0}{rgb}{1,0.647058823529412,0}
+
+\begin{groupplot}[group style={group size=1 by 2}]
+\nextgroupplot[
+	 ticklabel style={ 
+ 		 /pgf/number format/fixed, 
+ 		 /pgf/number format/precision=5
+		}, 
+scaled ticks=false,
+height=7cm,
+legend cell align={left},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
+minor xtick={},
+minor ytick={},
+tick align=outside,
+tick pos=left,
+width=\linewidth,
+x grid style={white!69.0196078431373!black},
+xlabel={Spessore parete (m)},
+xmajorgrids,
+xmin=-0.0175, xmax=0.3675,
+xtick style={color=black},
+xtick={0,0.015,0.135,0.335,0.35},
+xticklabel style = {rotate=90.0},
+y grid style={white!69.0196078431373!black},
+ylabel={Temperature (°C)},
+ymin=-5.94820265073794, ymax=20.3881663325197,
+ytick style={color=black},
+ytick={-10,-5,0,5,10,15,20,25}
+]
+\addplot [line width=1.5pt, green!50.1960784313725!black]
+table {%
+0 19.1910586514625
+0.015 19.035493007513
+0.135 -2.29922387699217
+0.335 -4.6473845403811
+0.35 -4.75109496968077
+};
+\addlegendentry{Temperatura}
+
+\nextgroupplot[
+	 ticklabel style={ 
+ 		 /pgf/number format/fixed, 
+ 		 /pgf/number format/precision=5
+		}, 
+scaled ticks=false,
+height=7cm,
+legend cell align={left},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
+minor xtick={},
+minor ytick={},
+tick align=outside,
+tick pos=left,
+width=\linewidth,
+x grid style={white!69.0196078431373!black},
+xlabel={Spessore equivalente Sd (m)},
+xmajorgrids,
+xmin=-0.1165, xmax=2.4465,
+xtick style={color=black},
+xtick={0,0.09,0.21,2.21,2.33},
+xticklabel style = {rotate=90.0},
+y grid style={white!69.0196078431373!black},
+ylabel={Pressione (Pa)},
+ymin=267.992841074213, ymax=2315.53376820431,
+ytick style={color=black},
+ytick={250,500,750,1000,1250,1500,1750,2000,2250,2500}
+]
+\addplot [line width=1.5pt, color0]
+table {%
+0 1519.01824347152
+0.09 1474.29035401961
+0.21 1414.65316808373
+2.21 420.700069152371
+2.33 361.06288321649
+};
+\addlegendentry{Pressione}
+\addplot [line width=1.5pt, red]
+table {%
+0 2222.46372606204
+0.09 2201.01860298296
+0.21 504.307624049651
+2.21 413.455716135536
+2.33 409.810487413109
+};
+\addlegendentry{Pressione Saturazione}
+\end{groupplot}
+
+\end{tikzpicture}
