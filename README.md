@@ -55,4 +55,4 @@ or to get a Glaser diagram:
 fig, axs = wall_3c.plot_glaser()
 plt.show()
 ```
-![Streamlit App](examples\my-bachelor-thesis\github_Glaser_wall_3c.png)
+<img src="examples/my-bachelor-thesis/github_Glaser_wall_3c.png" alt="glaser" width="500"/>
