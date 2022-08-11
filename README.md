@@ -50,3 +50,9 @@ print(wall_3c.calc_trasmittanza_termica_periodica())
 ```
 gives `0.04397424174344255`
 
+or to get a Glaser diagram:
+```
+fig, axs = wall_3c.plot_glaser()
+plt.show()
+```
+![Streamlit App](examples\my-bachelor-thesis\github_Glaser_wall_3c.png)

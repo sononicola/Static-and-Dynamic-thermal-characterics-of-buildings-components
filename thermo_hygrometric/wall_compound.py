@@ -1,8 +1,8 @@
 from dataclasses import dataclass
-from typing import Optional
 import numpy as np
 from numpy.testing import assert_almost_equal
 from .wall_layer import Layer
+import matplotlib.pyplot as plt
 
 
 @dataclass
@@ -43,6 +43,8 @@ class Wall:
     def specific_heats(self) -> np.ndarray:
         "np.array with specific_heat of each Layer"
         return np.array([layer.specific_heat for layer in self.layers])
+
+    # ======== STATIC ANALYSIS ========
 
     def equivalent_thicknesses(self) -> np.ndarray:
         "np.array with Sd of each Layer"
@@ -124,9 +126,52 @@ class Wall:
 
         return press
 
-    def draw_graph(self):
-        ...
+    def plot_glaser(self):
+        "Plot the Glaser diagram for the considered compound structure"
 
+        COLORS = [
+            list(plt.rcParams["axes.prop_cycle"])[col]["color"]
+            for col in range(len(list(plt.rcParams["axes.prop_cycle"])))
+        ]  # colors from the matplotlib style
+
+        fig, axs = plt.subplots(2, 1, figsize=(18, 10), tight_layout=True)
+        ax1, ax2 = axs
+
+        ax1.plot(
+            self.thickness_cumsum(),
+            self.calc_surface_temperatures()[1:-1],
+            label="Temperatura",
+            color=COLORS[0],
+        )
+        ax1.legend(loc="best", fontsize=12, frameon=True)
+        ax1.set_xlabel("Spessore parete (m)", fontsize=14)
+        ax1.set_ylabel("Temperatura (°C)", fontsize=14)
+        ax1.grid(axis="both")
+        ax1.set_xticks(self.thickness_cumsum())
+        ax1.tick_params(axis="x", rotation=90)
+
+        ax2.plot(
+            self.equivalent_thickness_cumsum(),
+            self.calc_internal_pressures(),
+            label="Pressione",
+            color=COLORS[1],
+        )
+        ax2.plot(
+            self.equivalent_thickness_cumsum(),
+            self.calc_saturation_pressures()[1:-1],
+            label="Pressione Saturazione",
+            color=COLORS[4],
+        )
+        ax2.legend(loc="best", fontsize=12, frameon=True)
+        ax2.set_xlabel("Spessore equivalente Sd (m)", fontsize=14)
+        ax2.set_ylabel("Pressione (Pa)", fontsize=14)
+        ax2.grid(axis="both")
+        ax2.set_xticks(self.equivalent_thickness_cumsum())
+        ax2.tick_params(axis="x", rotation=90)
+
+        return fig, axs
+
+    # ======== DYNAMIC ANALYSIS ========
     # TODO cambiare il nome
     def calc_profondità_penetrazione(self) -> np.ndarray:
         "delta"
@@ -166,8 +211,7 @@ class Wall:
         return zz
 
     def calc_matrice_trasferimento_tot(self) -> np.ndarray:
-        "Z"
-        "matrice di trasferimento totale  del componente edilizio = Z_N * Z_n-1 * ... * Z_1"
+        "Z = matrice di trasferimento totale  del componente edilizio = Z_N * Z_n-1 * ... * Z_1"
         zz = self.calc_matrice_trasferimento_layer()
 
         Z = np.zeros((2, 2), dtype=np.complex128)

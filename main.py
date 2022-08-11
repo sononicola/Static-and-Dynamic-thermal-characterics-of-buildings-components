@@ -1,5 +1,7 @@
 from thermo_hygrometric.wall_layer import Layer
 from thermo_hygrometric.wall_compound import Wall
+import matplotlib.pyplot as plt
+plt.style.use(['science' , 'retro'])
 
 
 gessofibra = Layer(
@@ -39,3 +41,6 @@ wall_3c = Wall(name="3c", layers=[gessofibra, xlam, isolante, intonaco])
 
 
 print(wall_3c.calc_trasmittanza_termica_periodica())
+
+fig, axs = wall_3c.plot_glaser()
+plt.show()
