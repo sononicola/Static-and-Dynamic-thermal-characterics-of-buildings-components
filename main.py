@@ -1,7 +1,10 @@
+from thermo_hygrometric.utils import plot_bar_chart_comparasion
 from thermo_hygrometric.wall_layer import Layer
 from thermo_hygrometric.wall_compound import Wall
 import matplotlib.pyplot as plt
-plt.style.use(['science' , 'retro'])
+plt.style.use(['science' , 'retro', "no-latex"])
+import pandas as pd
+
 
 
 gessofibra = Layer(
@@ -38,9 +41,13 @@ intonaco = Layer(
 )
 
 wall_3c = Wall(name="3c", layers=[gessofibra, xlam, isolante, intonaco])
+wall_3d = Wall(name="3d", layers=[gessofibra, isolante, xlam, intonaco])
 
 
 print(wall_3c.calc_trasmittanza_termica_periodica())
+print(wall_3c.calc_diffusivita_termica())
+print(wall_3c.create_dict_valuable_properties())
 
-fig, axs = wall_3c.plot_glaser()
+plot_bar_chart_comparasion([wall_3c, wall_3d], latex=True)
 plt.show()
+

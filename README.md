@@ -56,3 +56,16 @@ fig, axs = wall_3c.plot_glaser()
 plt.show()
 ```
 <img src="examples/my-bachelor-thesis/github_Glaser_wall_3c.png" alt="glaser" width="500"/>
+
+
+### Plotting a comparasion between two Walls:
+```
+plt.style.use(['science' , 'retro']) # not really needed
+from thermo_hygrometric.utils import plot_bar_chart_comparasion
+
+wall_3c = Wall(name="3c", layers=[gessofibra, xlam, isolante, intonaco])
+wall_3d = Wall(name="3d", layers=[gessofibra, isolante, xlam, intonaco])
+plot_bar_chart_comparasion([wall_3c, wall_3d], latex=True)
+plt.show()
+```
+<img src="examples/my-bachelor-thesis/github_bar_chart_comparasion.png" alt="glaser" width="500"/>

@@ -3,6 +3,7 @@ import numpy as np
 from numpy.testing import assert_almost_equal
 from .wall_layer import Layer
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 @dataclass
@@ -21,6 +22,10 @@ class Wall:
     def thicknesses(self) -> np.ndarray:
         "np.array with thickness of each Layer"
         return np.array([layer.thickness for layer in self.layers])
+
+    def thickness_tot(self) -> float:
+        "np.array with the total thickness"
+        return np.sum(self.thicknesses())
 
     def thickness_cumsum(self) -> np.ndarray:
         "cumulative sum of thickness of each Layer. Starting from 0"
@@ -172,7 +177,7 @@ class Wall:
         return fig, axs
 
     # ======== DYNAMIC ANALYSIS ========
-    # TODO cambiare il nome
+    # TODO cambiare i nomi che sono in italiano
     def calc_profondità_penetrazione(self) -> np.ndarray:
         "delta"
         # TIME: hour to seconds
@@ -290,6 +295,49 @@ class Wall:
 
         return Y22
 
+    def calc_capacita_termica_areica_interna(self) -> float:
+        "k1 = omega * modulo(Z11-1/Z12)"
+        Zee = self.calc_matrice_trasferimento_tot_ambiente_ambiente()
+        return (
+            (self.time * 3600)
+            / (2 * np.pi)
+            * np.sqrt(
+                (((Zee[0][0] - 1) / Zee[0][1]).real) ** 2
+                + (((Zee[0][0] - 1) / Zee[0][1]).imag) ** 2
+            )
+        ) / 1000  # kJ/m2 K
+
+    def calc_capacita_termica_areica_esterna(self) -> float:
+        "k1 = omega * modulo(Z11-1/Z12)"
+        Zee = self.calc_matrice_trasferimento_tot_ambiente_ambiente()
+        return (
+            (self.time * 3600)
+            / (2 * np.pi)
+            * np.sqrt(
+                (((Zee[1][1] - 1) / Zee[0][1]).real) ** 2
+                + (((Zee[1][1] - 1) / Zee[0][1]).imag) ** 2
+            )
+        ) / 1000  # kJ/m2 K
+
+    # ======== SOME COMPOUND STRUCTURE PROPERTIES ========
+    def calc_massa_superficiale_tot(self) -> float:
+        return np.sum(self.thicknesses() * self.densities())
+
+    def calc_capacita_termica_areica_tot(self) -> float:
+        return np.sum(self.thicknesses() * self.densities() * self.specific_heats())
+
+    def calc_diffusivita_termica(self) -> np.ndarray:
+        return (self.thermal_conductivities()) / (
+            self.densities() * self.specific_heats()
+        )
+
+    def calc_effusivita_termcia(self) -> np.ndarray:
+        return np.sqrt(
+            self.thermal_conductivities() * self.densities() * self.specific_heats()
+        )
+
+    # ======== PRINTING RESULTS ========
+
     def run_analysis(self) -> str:
         "Return all results as a string"
         # TODO
@@ -317,3 +365,19 @@ class Wall:
         res += str(self.calc_ammettanza_termica_interna())
         res += str(self.calc_ammettanza_termica_esterna())
         return res
+
+    def create_dict_valuable_properties(self) -> dict:
+        """
+        used to create the bar plot comparasion with differnt compouns structures.
+
+        Il fattore di attenuazione è riportato in valore assoluto"""
+        # TODO nomi in inglese? vanno nella leggenda poi
+        return {
+            "spessore": self.thickness_tot(),
+            "resistenza": self.thermal_resistance_tot(),
+            "massa superficiale": self.calc_massa_superficiale_tot(),
+            "trasmittanza termica periodica": self.calc_trasmittanza_termica_periodica(),
+            "sfasamento": self.calc_sfasamento(),
+            "fattore attenuazione": abs(self.calc_attenuazione()),
+            "capacità termica areica interna": self.calc_capacita_termica_areica_interna(),
+        }
