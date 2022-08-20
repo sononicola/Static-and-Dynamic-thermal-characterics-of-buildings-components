@@ -1,12 +1,12 @@
 ## Usage:
 After importing
-```
+```python
 from thermo_hygrometric.wall_layer import Layer
 from thermo_hygrometric.wall_compound import Wall
 ```
 
 Create the Layers of the compund wall
-```
+```python
 gessofibra = Layer(
     name="Gessofibra",
     thickness=0.015,
@@ -41,17 +41,17 @@ intonaco = Layer(
 )
 ```
 Then add them to a Wall 
-```
+```python
 wall_3c = Wall(name="3c", layers=[gessofibra, xlam, isolante, intonaco])
 ```
 Finally, for example:
-```
+```python
 print(wall_3c.calc_trasmittanza_termica_periodica())
 ```
 gives `0.04397424174344255`
 
 or to get a Glaser diagram:
-```
+```python
 fig, axs = wall_3c.plot_glaser()
 plt.show()
 ```
@@ -59,7 +59,7 @@ plt.show()
 
 
 ### Plotting a comparasion between two Walls:
-```
+```python
 plt.style.use(['science' , 'retro']) # not really needed
 from thermo_hygrometric.utils import plot_bar_chart_comparasion
 
