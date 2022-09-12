@@ -1,8 +1,7 @@
 ## Usage:
 After importing
 ```python
-from thermo_hygrometric.wall_layer import Layer
-from thermo_hygrometric.wall_compound import Wall
+from thermo_hygrometric import Layer, Wall
 ```
 
 Create the Layers of the compund wall

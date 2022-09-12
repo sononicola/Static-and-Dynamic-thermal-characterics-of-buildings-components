@@ -1,10 +1,9 @@
 from thermo_hygrometric.utils import plot_bar_chart_comparasion
-from thermo_hygrometric.wall_layer import Layer
-from thermo_hygrometric.wall_compound import Wall
+from thermo_hygrometric import Layer, Wall
 import matplotlib.pyplot as plt
-plt.style.use(['science' , 'retro', "no-latex"])
-import pandas as pd
 
+plt.style.use(["science", "retro", "no-latex"])
+import pandas as pd
 
 
 gessofibra = Layer(
@@ -50,4 +49,3 @@ print(wall_3c.create_dict_valuable_properties())
 
 plot_bar_chart_comparasion([wall_3c, wall_3d], latex=True)
 plt.show()
-

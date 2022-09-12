@@ -1,4 +1,3 @@
-from operator import le
 from .wall_compound import Wall
 import pandas as pd
 import matplotlib.pyplot as plt
