@@ -174,7 +174,7 @@ class Wall:
         ax2.set_xticks(self.equivalent_thickness_cumsum())
         ax2.tick_params(axis="x", rotation=90)
 
-        return fig, axs
+        return fig
 
     # ======== DYNAMIC ANALYSIS ========
     # TODO cambiare i nomi che sono in italiano

@@ -82,7 +82,7 @@ with st.container():
     st.write(wall)
 
 if st.button(label="run"):
-    fig, ax = wall.plot_glaser()
+    fig = wall.plot_glaser()
     st.pyplot(fig)
 
 

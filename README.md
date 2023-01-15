@@ -51,7 +51,7 @@ gives `0.04397424174344255`
 
 or to get a Glaser diagram:
 ```python
-fig, axs = wall_3c.plot_glaser()
+fig = wall_3c.plot_glaser()
 plt.show()
 ```
 <img src="examples/my-bachelor-thesis/github_Glaser_wall_3c.png" alt="glaser" width="500"/>
