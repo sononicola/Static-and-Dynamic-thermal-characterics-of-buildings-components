@@ -131,7 +131,7 @@ class Wall:
 
         return press
 
-    def plot_glaser(self):
+    def plot_glaser(self, show_layers_name:bool = True):
         "Plot the Glaser diagram for the considered compound structure"
 
         COLORS = [
@@ -155,8 +155,15 @@ class Wall:
         ax1.set_xticks(self.thickness_cumsum())
         ax1.tick_params(axis="x", rotation=90)
 
+        # Layers' names:
+        if show_layers_name:
+            x_pos = self.thickness_cumsum()[1:] - self.thicknesses()/2 # x cumulative position in the middle of each layer
+            for index, layer in enumerate(self.layers):
+                ax1.text(x_pos[index], ax1.get_ylim()[1]/2, layer.name, rotation=90, horizontalalignment='center', verticalalignment='center', fontsize=10,
+                    bbox=dict(alpha=1, color="white", pad=0))
+
         ax2.plot(
-            self.equivalent_thickness_cumsum(),
+            self.equivalent_thickness_cumsum(), #TODO fare il grafico con lo spessore normale
             self.calc_internal_pressures(),
             label="Pressione",
             color=COLORS[1],
@@ -173,6 +180,13 @@ class Wall:
         ax2.grid(axis="both")
         ax2.set_xticks(self.equivalent_thickness_cumsum())
         ax2.tick_params(axis="x", rotation=90)
+
+        # Layers' names:
+        if show_layers_name:
+            x_pos = self.equivalent_thickness_cumsum()[1:] - self.equivalent_thicknesses()/2 # x cumulative position in the middle of each layer
+            for index, layer in enumerate(self.layers):
+                ax2.text(x_pos[index], ax2.get_ylim()[1]/2, layer.name, rotation=90, horizontalalignment='center', verticalalignment='center', fontsize=10,
+                    bbox=dict(alpha=1, color="white", pad=0))
 
         return fig
 
