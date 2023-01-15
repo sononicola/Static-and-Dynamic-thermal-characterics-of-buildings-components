@@ -131,7 +131,7 @@ class Wall:
 
         return press
 
-    def plot_glaser(self, show_layers_name:bool = True):
+    def plot_glaser(self, show_layer_color: bool = True, show_layer_name: bool = True):
         "Plot the Glaser diagram for the considered compound structure"
 
         COLORS = [
@@ -141,6 +141,16 @@ class Wall:
 
         fig, axs = plt.subplots(2, 1, figsize=(18, 10), tight_layout=True)
         ax1, ax2 = axs
+
+    # == Temperature plot == #
+        if show_layer_color:
+            for index, layer in enumerate(self.layers):
+                ax1.axvspan(
+                    self.thickness_cumsum()[index],
+                    self.thickness_cumsum()[index + 1],
+                    facecolor=layer.color,
+                    alpha=0.2,
+                )
 
         ax1.plot(
             self.thickness_cumsum(),
@@ -156,14 +166,34 @@ class Wall:
         ax1.tick_params(axis="x", rotation=90)
 
         # Layers' names:
-        if show_layers_name:
-            x_pos = self.thickness_cumsum()[1:] - self.thicknesses()/2 # x cumulative position in the middle of each layer
+        if show_layer_name:
+            x_pos = (
+                self.thickness_cumsum()[1:] - self.thicknesses() / 2
+            )  # x cumulative position in the middle of each layer
             for index, layer in enumerate(self.layers):
-                ax1.text(x_pos[index], ax1.get_ylim()[1]/2, layer.name, rotation=90, horizontalalignment='center', verticalalignment='center', fontsize=10,
-                    bbox=dict(alpha=1, color="white", pad=0))
+                ax1.text(
+                    x_pos[index],
+                    ax1.get_ylim()[1] / 2,
+                    layer.name,
+                    rotation=90,
+                    horizontalalignment="center",
+                    verticalalignment="center",
+                    fontsize=10,
+                    bbox=dict(alpha=1, color="white", pad=0),
+                )
+
+        # == Pressure plot == #
+        if show_layer_color:
+            for index, layer in enumerate(self.layers):
+                ax2.axvspan(
+                    self.equivalent_thickness_cumsum()[index],
+                    self.equivalent_thickness_cumsum()[index + 1],
+                    facecolor=layer.color,
+                    alpha=0.2,
+                )
 
         ax2.plot(
-            self.equivalent_thickness_cumsum(), #TODO fare il grafico con lo spessore normale
+            self.equivalent_thickness_cumsum(),  # TODO fare il grafico con lo spessore normale
             self.calc_internal_pressures(),
             label="Pressione",
             color=COLORS[1],
@@ -182,11 +212,22 @@ class Wall:
         ax2.tick_params(axis="x", rotation=90)
 
         # Layers' names:
-        if show_layers_name:
-            x_pos = self.equivalent_thickness_cumsum()[1:] - self.equivalent_thicknesses()/2 # x cumulative position in the middle of each layer
+        if show_layer_name:
+            x_pos = (
+                self.equivalent_thickness_cumsum()[1:]
+                - self.equivalent_thicknesses() / 2
+            )  # x cumulative position in the middle of each layer
             for index, layer in enumerate(self.layers):
-                ax2.text(x_pos[index], ax2.get_ylim()[1]/2, layer.name, rotation=90, horizontalalignment='center', verticalalignment='center', fontsize=10,
-                    bbox=dict(alpha=1, color="white", pad=0))
+                ax2.text(
+                    x_pos[index],
+                    ax2.get_ylim()[1] / 2,
+                    layer.name,
+                    rotation=90,
+                    horizontalalignment="center",
+                    verticalalignment="center",
+                    fontsize=10,
+                    bbox=dict(alpha=1, color="white", pad=0),
+                )
 
         return fig
 
