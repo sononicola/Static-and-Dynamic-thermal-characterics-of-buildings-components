@@ -143,7 +143,7 @@ class Wall:
         fig, axs = plt.subplots(2, 1, figsize=(18, 10), tight_layout=True)
         ax1, ax2 = axs
 
-    # == Plot with Thickness as x axis == #
+        # == Plot with Thickness as x axis == #
         if show_layer_color:
             for index, layer in enumerate(self.layers):
                 ax1.axvspan(
@@ -158,11 +158,11 @@ class Wall:
             self.calc_surface_temperatures()[1:-1],
             label="Temperatura",
             color=COLORS[0],
-            linewidth = LINEWIDTH
+            linewidth=LINEWIDTH,
         )
         ax1.set_xlabel("Spessore della parete (m)", fontsize=14)
         ax1.set_ylabel("Temperatura (°C)", fontsize=14)
-        #ax1.grid(axis="both")
+        ax1.grid(axis="both")
         ax1.set_xticks(self.thickness_cumsum())
         ax1.tick_params(axis="x", rotation=90)
         ax1.set_xlim(0, self.thickness_cumsum()[-1])
@@ -173,20 +173,19 @@ class Wall:
             self.calc_internal_pressures(),
             label="Pressione",
             color=COLORS[1],
-            linewidth = LINEWIDTH
+            linewidth=LINEWIDTH,
         )
         ax11.plot(
             self.thickness_cumsum(),
             self.calc_saturation_pressures()[1:-1],
             label="Pressione Saturazione",
             color=COLORS[4],
-            linewidth = LINEWIDTH
+            linewidth=LINEWIDTH,
         )
         ax11.set_ylabel("Pressione (Pa)", fontsize=14)
-        #ax11.grid(axis="both")
+        ax11.grid(axis="both")
 
-
-        fig.legend(loc="upper center",fontsize=12, frameon=True)
+        fig.legend(loc="upper center", fontsize=12, frameon=True)
 
         # Layers' names:
         if show_layer_name:
@@ -205,7 +204,7 @@ class Wall:
                     bbox=dict(alpha=1, color="white", pad=0),
                 )
 
-    # == Plot with Equivalent Thickness as x axis == #
+        # == Plot with Equivalent Thickness as x axis == #
         if show_layer_color:
             for index, layer in enumerate(self.layers):
                 ax2.axvspan(
@@ -216,38 +215,39 @@ class Wall:
                 )
 
         ax2.plot(
-                    self.equivalent_thickness_cumsum(),
-                    self.calc_surface_temperatures()[1:-1],
-                    label="Temperatura",
-                    color=COLORS[0],
-                    linewidth = LINEWIDTH
-                )
+            self.equivalent_thickness_cumsum(),
+            self.calc_surface_temperatures()[1:-1],
+            label="Temperatura",
+            color=COLORS[0],
+            linewidth=LINEWIDTH,
+        )
 
         ax2.set_xlabel("Spessore equivalente Sd della parete (m)", fontsize=14)
         ax2.set_ylabel("Temperatura (°C)", fontsize=14)
-        #ax2.grid(axis="both")
+        ax2.grid(axis="both")
         ax2.set_xticks(self.equivalent_thickness_cumsum())
         ax2.tick_params(axis="x", rotation=90)
         ax2.set_xlim(0, self.equivalent_thickness_cumsum()[-1])
 
         ax22 = ax2.twinx()
         ax22.plot(
-            self.equivalent_thickness_cumsum(),  # TODO fare il grafico con lo spessore normale
+            self.equivalent_thickness_cumsum(),
             self.calc_internal_pressures(),
             label="Pressione",
             color=COLORS[1],
-            linewidth = LINEWIDTH
+            linewidth=LINEWIDTH,
         )
         ax22.plot(
             self.equivalent_thickness_cumsum(),
             self.calc_saturation_pressures()[1:-1],
             label="Pressione Saturazione",
             color=COLORS[4],
-            linewidth = LINEWIDTH
+            linewidth=LINEWIDTH,
         )
         ax22.set_ylabel("Pressione (Pa)", fontsize=14)
-        #ax2.legend(loc="best", fontsize=12, frameon=True)
-        
+        ax22.grid(axis="both")
+
+        # ax2.legend(loc="best", fontsize=12, frameon=True)
 
         # Layers' names:
         if show_layer_name:
