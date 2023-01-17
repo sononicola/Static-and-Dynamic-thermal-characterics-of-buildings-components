@@ -186,6 +186,31 @@ class Wall:
         ax11.grid(axis="both")
 
         fig.legend(loc="upper center", fontsize=12, frameon=True)
+        # Scritta esterno e interno
+        ax1.text(
+            0.005,
+            self.temp_ext,
+            "Interno",
+            rotation=90,
+            horizontalalignment="center",
+            verticalalignment="bottom",
+            fontsize=10,
+            #transform=fig.transFigure,
+            bbox=dict(alpha=1, pad=5, facecolor="white", edgecolor="black"),
+        )
+
+        ax1.text(
+            self.thickness_cumsum()[-1] - 0.005,
+            self.temp_int,
+            "Esterno",
+            rotation=90,
+            horizontalalignment="center",
+            verticalalignment="top",
+            fontsize=10,
+            #transform=fig.transFigure,
+            bbox=dict(alpha=1, pad=5, facecolor="white", edgecolor="black"),
+        )
+
 
         # Layers' names:
         if show_layer_name:
@@ -201,7 +226,7 @@ class Wall:
                     horizontalalignment="center",
                     verticalalignment="center",
                     fontsize=10,
-                    bbox=dict(alpha=1, color="white", pad=0),
+                    bbox=dict(alpha=1, pad=1, facecolor="white", edgecolor="black"),
                 )
 
         # == Plot with Equivalent Thickness as x axis == #
@@ -264,9 +289,9 @@ class Wall:
                     horizontalalignment="center",
                     verticalalignment="center",
                     fontsize=10,
-                    bbox=dict(alpha=1, color="white", pad=0),
+                    bbox=dict(alpha=1, pad=1, facecolor="white", edgecolor="black"),
                 )
-
+        fig.subplots_adjust(hspace=10)
         return fig
 
     # ======== DYNAMIC ANALYSIS ========
